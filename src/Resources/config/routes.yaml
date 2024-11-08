@@ -1,0 +1,4 @@
+review_routes:
+    resource: '../../Controller/'
+    type: attribute
+    prefix: / 

@@ -1,0 +1,22 @@
+{
+    "name": "rhys/review-bundle",
+    "type": "symfony-bundle",
+    "description": "Book review bundle for Symfony applications",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rhys Gregory"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "symfony/framework-bundle": "^7.0",
+        "doctrine/orm": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rhys\\ReviewBundle\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}

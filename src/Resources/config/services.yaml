@@ -1,0 +1,17 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Rhys\ReviewBundle\:
+        resource: '../../'
+        exclude:
+            - '../../DependencyInjection/'
+            - '../../Entity/'
+            - '../../Resources/'
+            - '../../ReviewBundle.php'
+
+    Rhys\ReviewBundle\Controller\:
+        resource: '../../Controller/'
+        tags: ['controller.service_arguments']

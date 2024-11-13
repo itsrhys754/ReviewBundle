@@ -18,6 +18,10 @@ A Symfony bundle for managing book reviews. This bundle provides a complete revi
 ```bash
 composer require rhys/review-bundle
 ```
+or Install the bundle using:
+```bash
+git submodule add https://github.com/itsrhys754/ReviewBundle
+```
 
 2. Add the bundle to your application's kernel in `config/bundles.php`:
 ```php

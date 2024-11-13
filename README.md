@@ -114,9 +114,7 @@ class Book
 ## Events
 
 The bundle dispatches the following events:
-- `review.submitted` - When a review is submitted
 - `review.approved` - When a review is approved
-- `review.rejected` - When a review is rejected
 
 ## Contributing
 

@@ -16,14 +16,10 @@ A Symfony bundle for managing book reviews. This bundle provides a complete revi
 
 1. Install the bundle using Composer:
 ```bash
-composer require rhys/review-bundle
-```
-or Install the bundle using:
-```bash
-git submodule add https://github.com/itsrhys754/ReviewBundle
+composer require rhysawd/review-bundle:@dev
 ```
 
-2. Add the bundle to your application's kernel in `config/bundles.php`:
+2. Ensure the bundle has been added to your application's kernel in `config/bundles.php`:
 ```php
 return [
     // ...
@@ -50,9 +46,9 @@ doctrine:
             ReviewBundle:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/vendor/rhys/review-bundle/src/Entity'
+                dir: 'vendor/rhysawd/review-bundle/src/Entity'  
                 prefix: 'Rhys\ReviewBundle\Entity'
-                alias: ReviewBundle
+                alias: RhysReviewBundle
 ```
 
 3. Add the bundle's routes to `config/routes.yaml`:
@@ -93,8 +89,6 @@ templates/bundles/ReviewBundle/review/
 
 Available templates to override:
 - `form.html.twig` - The review submission form
-- `list.html.twig` - List of reviews
-- `admin/manage_reviews.html.twig` - Admin review management
 
 ## Entity Relations
 
@@ -107,8 +101,27 @@ use Doctrine\Common\Collections\Collection;
 class Book
 {
     /**
-     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="book")
+     * @var Collection<int, Review>
      */
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'book', orphanRemoval: true)]
+    private Collection $reviews;
+
+    // ... getters and setters
+}
+```
+
+And your User entity:
+
+```php
+use Rhys\ReviewBundle\Entity\Review;
+use Doctrine\Common\Collections\Collection;
+
+class User
+{
+    /**
+     * @var Collection<int, Review>
+     */
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $reviews;
 
     // ... getters and setters
@@ -130,5 +143,5 @@ This bundle is released under the MIT license. See the included [LICENSE](LICENS
 
 ## Support
 
-If you find a bug or want to suggest an improvement, please create an issue on the [GitHub repository](https://github.com/yourusername/ReviewBundler).
+If you find a bug or want to suggest an improvement, please create an issue on the [GitHub repository](https://github.com/itsrhys754/ReviewBundle).
 ```

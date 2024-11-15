@@ -18,7 +18,7 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
-    public function findPendingReviews(?User $excludeUser = null): array
+    public function findByPendingStatus(?User $excludeUser = null): array
     {
         $qb = $this->createQueryBuilder('r')
             ->where('r.approved = :approved')

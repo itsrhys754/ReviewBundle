@@ -1,5 +1,5 @@
 {
-    "name": "rhys/review-bundle",
+    "name": "rhysawd/review-bundle",
     "type": "symfony-bundle",
     "description": "Book review bundle for Symfony applications",
     "license": "MIT",

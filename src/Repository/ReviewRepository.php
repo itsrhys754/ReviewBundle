@@ -18,19 +18,20 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
-    public function findByPendingStatus(?User $excludeUser = null): array
-    {
-        $qb = $this->createQueryBuilder('r')
-            ->where('r.approved = :approved')
-            ->setParameter('approved', false);
-        
-        if ($excludeUser) {
-            $qb->andWhere('r.user != :excludeUser')
-                ->setParameter('excludeUser', $excludeUser);
-        }
+    // src/Repository/ReviewRepository.php
 
-        return $qb->getQuery()->getResult();
-    }
+public function findPendingReviews(User $user)
+{
+    // Using the 'approved' field, which exists on the Review entity
+    return $this->createQueryBuilder('r')
+        ->where('r.approved = :approved') // filter reviews where approved is false
+        ->andWhere('r.user != :user') // optionally, exclude reviews of the current admin
+        ->setParameter('approved', false)
+        ->setParameter('user', $user)
+        ->getQuery()
+        ->getResult();
+}
+
 
 //    /**
 //     * @return Review[] Returns an array of Review objects

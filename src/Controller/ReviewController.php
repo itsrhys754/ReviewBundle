@@ -123,6 +123,7 @@ class ReviewController extends AbstractController
                     'createdAt' => $review->getCreatedAt()->format('M d, Y'),
                     'username' => $review->getUser()->getUsername(),
                     'userInitial' => substr($review->getUser()->getUsername(), 0, 1),
+                    'containsSpoilers' => $review->isContainsSpoilers(),
                 ];
             }, $reviews)
         ]);
@@ -134,7 +135,7 @@ class ReviewController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
-        $voteType = $request->query->get('type'); // 'upvote' or 'downvote'
+        $voteType = $request->query->get('type'); // upvote or downvote
         $user = $this->getUser();
 
         // Check if the user has already voted

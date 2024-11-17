@@ -7,6 +7,7 @@ use App\Entity\Book;
 use App\Entity\User;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
 class Review
@@ -33,11 +34,15 @@ class Review
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
     #[ORM\Column(type: 'boolean')]
-    private $approved = false; // Default value set to false
+    private $approved = false; 
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $contains_spoilers = false;
+
+    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Vote::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $votes;
+
 
     public function getId(): ?int
     {
@@ -116,5 +121,60 @@ class Review
     {
         $this->approved = $approved;
         return $this;
+    }
+
+    public function isContainsSpoilers(): bool
+    {
+        return $this->contains_spoilers;
+    }
+
+    public function setContainsSpoilers(bool $contains_spoilers): self
+    {
+        $this->contains_spoilers = $contains_spoilers;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vote>
+     */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVote(Vote $vote): self
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes[] = $vote;
+            $vote->setReview($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): self
+    {
+        if ($this->votes->removeElement($vote)) {
+            // set the owning side to null (unless already changed)
+            if ($vote->getReview() === $this) {
+                $vote->setReview(null);
+            }
+        }
+
+        return $this;
+    }
+    
+    public function getUpvotesCount(): int
+    {
+        return $this->votes->filter(function (Vote $vote) {
+            return $vote->getType() === 'upvote';
+        })->count();
+    }
+
+    public function getDownvotesCount(): int
+    {
+        return $this->votes->filter(function (Vote $vote) {
+            return $vote->getType() === 'downvote';
+        })->count();
     }
 }

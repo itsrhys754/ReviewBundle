@@ -20,8 +20,8 @@ class Review
     #[ORM\Column(length: 255)]
     private ?string $content = null;
 
-    #[ORM\Column]
-    private ?int $rating = null;
+    #[ORM\Column(type: 'decimal', precision: 3, scale: 1)]
+    private ?float $rating = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
@@ -61,12 +61,12 @@ class Review
         return $this;
     }
 
-    public function getRating(): ?int
+    public function getRating(): ?float
     {
         return $this->rating;
     }
 
-    public function setRating(int $rating): self
+    public function setRating(float $rating): self
     {
         if ($rating < 0 || $rating > 10) {
             throw new \InvalidArgumentException('Rating must be between 0 and 10.');

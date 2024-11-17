@@ -3,6 +3,7 @@
 A Symfony bundle for managing book reviews. This bundle provides a complete review system for books, including:
 - Review submission with ratings
 - Review moderation/approval system
+- Upvote and downvote system
 - Configurable rating ranges
 - Integration with Symfony security for user management
 

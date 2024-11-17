@@ -49,7 +49,9 @@ class ReviewRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('r')
             ->where('r.book = :book')
-            ->setParameter('book', $book);
+            ->andWhere('r.approved = :approved')
+            ->setParameter('book', $book)
+            ->setParameter('approved', true);
 
         // Apply sorting based on the provided criteria
         switch ($sort) {

@@ -124,6 +124,7 @@ class ReviewController extends AbstractController
                     'username' => $review->getUser()->getUsername(),
                     'userInitial' => substr($review->getUser()->getUsername(), 0, 1),
                     'containsSpoilers' => $review->isContainsSpoilers(),
+                    'approved' => $review->isApproved(),
                 ];
             }, $reviews)
         ]);

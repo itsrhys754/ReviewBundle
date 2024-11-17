@@ -6,6 +6,7 @@ use Rhys\ReviewBundle\Entity\Review;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\User;
+use App\Entity\Book;
 
 
 /**
@@ -34,6 +35,36 @@ class ReviewRepository extends ServiceEntityRepository
                ->setParameter('user', $excludeUser);
         }
         
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Find reviews for a specific book, optionally sorted by a specified criteria.
+     * 
+     * @param Book $book The book for which to find reviews.
+     * @param string $sort The sorting criteria (e.g., 'recent', 'lowest', 'highest').
+     * @return Review[] Returns an array of Review objects.
+     */
+    public function findFilteredReviews(Book $book, string $sort): array
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->where('r.book = :book')
+            ->setParameter('book', $book);
+
+        // Apply sorting based on the provided criteria
+        switch ($sort) {
+            case 'lowest':
+                $qb->orderBy('r.rating', 'ASC');
+                break;
+            case 'highest':
+                $qb->orderBy('r.rating', 'DESC');
+                break;
+            case 'recent':
+            default:
+                $qb->orderBy('r.createdAt', 'DESC');
+                break;
+        }
+
         return $qb->getQuery()->getResult();
     }
 }
